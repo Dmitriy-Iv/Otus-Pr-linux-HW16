@@ -1,0 +1,22 @@
+---
+# tasks file for log
+
+- name: Copy rsyslog config
+  template:
+    src: templates/log-rsyslog_conf.j2
+    dest: /etc/rsyslog.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    Restart rsyslog
+
+- name: Copy auditd.conf
+  template:
+    src: templates/log-auditd_conf.j2
+    dest: /etc/audit/auditd.conf
+    owner: root
+    group: root
+    mode: 0640
+  notify:
+    Restart audit

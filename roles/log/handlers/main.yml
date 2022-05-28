@@ -1,0 +1,10 @@
+---
+# handlers file for log
+- name: Restart rsyslog
+  systemd:
+    name: rsyslog
+    state: restarted
+    enabled: yes
+
+- name: Restart audit
+  shell: 'service auditd restart'    

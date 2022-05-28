@@ -1,0 +1,40 @@
+---
+
+#################################  Config all servers   ##########################################
+- name: Config Servers
+  hosts: all
+  gather_facts: no
+  become: true
+
+  tasks:
+    - name: Set timezone to Europe/Moscow
+      timezone:
+        name: Europe/Moscow
+    
+    - name: Restart chronyd
+      service:
+        name: chronyd
+        state: restarted
+
+    - name: install nano
+      yum:
+        name: nano
+        state: present   
+
+#################################  Config WEB/Nginx Server   ##########################################
+- name: Config WEB
+  hosts: web
+  gather_facts: no
+  become: true
+   
+  roles:
+    - web 
+
+#################################  Config LOG/Rsyslog Server  ##########################################
+- name: Config LOG
+  hosts: log
+  gather_facts: no
+  become: true
+  
+  roles:
+    - log   

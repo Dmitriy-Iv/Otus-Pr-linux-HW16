@@ -1,0 +1,64 @@
+---
+# tasks file for web
+- name: Install EPEL Repo package from standart repo
+  yum:
+    name: epel-release
+    state: present
+
+- name: Install NGINX package from EPEL Repo
+  yum:
+    name: nginx
+    state: present
+  notify:
+    - Restart nginx
+
+- name: Install audispd-plugins
+  yum:
+    name: audispd-plugins
+    state: present
+
+- name: Copy nginx config
+  template:
+    src: templates/web-nginx_conf.j2
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    Reload nginx
+
+- name: Copy files for audit service
+  block:
+    - name: Copy audit.rules
+      template:
+        src: templates/web-audit_rules.j2
+        dest: /etc/audit/rules.d/audit.rules
+        owner: root
+        group: root
+        mode: 0640
+
+    - name: Copy auditd.conf
+      template:
+        src: templates/web-auditd_conf.j2
+        dest: /etc/audit/auditd.conf
+        owner: root
+        group: root
+        mode: 0640
+
+    - name: Copy au-remote.conf
+      template:
+        src: templates/web-au-remote_conf.j2
+        dest: /etc/audisp/plugins.d/au-remote.conf
+        owner: root
+        group: root
+        mode: 0640
+
+    - name: Copy audisp-remote.conf
+      template:
+        src: templates/web-audisp-remote_conf.j2
+        dest: /etc/audisp/audisp-remote.conf
+        owner: root
+        group: root
+        mode: 0640
+  notify:
+    Restart audit   
