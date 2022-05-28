@@ -9,6 +9,6 @@
 - Для запуска выполняем следующее:
 ```
 git clone https://github.com/Dmitriy-Iv/Otus-Pr-linux-HW18.git
-cd Otus-Pr-linux-HW18/Ansible/
+cd Otus-Pr-linux-HW18/
 vagrant up
 ```
